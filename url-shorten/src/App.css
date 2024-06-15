@@ -1,0 +1,56 @@
+.topnav {
+  background-color: #446CB3;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.main-container {
+  min-height: 100vh;
+  margin-top: 20px;
+  position: relative;
+}
+
+.text-blue{
+  color: #446CB3;
+}
+
+:focus {
+  outline: none;
+}
+
+.input-container {
+  width: 800px;
+  display: flex;
+  width: 800px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+.input-container .input-group{
+  width: 650px;
+}
+
+.input-container > * {
+  margin: 5px;
+}
