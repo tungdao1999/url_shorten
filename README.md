@@ -1,2 +1,2 @@
 # url_shorten
-a project for short url websit
+A simple short URL website
