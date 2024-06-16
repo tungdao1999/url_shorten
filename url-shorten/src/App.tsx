@@ -4,6 +4,8 @@ import Contact from './page/contact';
 
 import './App.css'
 import HandleRedirect from './redirect';
+import NotFoundError from './error/notfound';
+import Header from './page/header';
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   let location = useLocation();
@@ -18,10 +20,7 @@ function App() {
   return (
     <Router>
       <div>
-        <div className="topnav">
-          <Link to="/short">Short</Link>
-          <Link to="/contact">Contact</Link>
-        </div>
+      <Header />
         <div className='main-container'>
           <Routes>
             <Route path="/short"
@@ -48,6 +47,7 @@ function App() {
               }
             >
             </Route>
+            <Route path="/notfound" element={<NotFoundError />} />
           </Routes>
         </div>
       </div>

@@ -14,11 +14,11 @@ const RedirectHandler = () => {
           window.location.href = response.redirectUrl;
         } else {
           // If the original URL does not exist, redirect to an error page or show an error message
-          window.location.href = '/error'; 
+          window.location.href = '/notfound'; 
         }
       } catch (error) {
         // Handle the error or perform any necessary actions
-        window.location.href = '/error';
+        window.location.href = '/notfound';
       }
     };
 
