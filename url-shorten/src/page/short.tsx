@@ -25,13 +25,17 @@ const Short: React.FC = () => {
 
     api.postApiData('shorten', shortRequest)
      .then((response: ShortResponse) => {
-        setShortedUrl(response.shortedUrl);
-        console.log(response);
+        setShortedUrl(window.location.host + '/' +response.shortedUrl);
       })
      .catch((error: any) => {
         console.log(error);
       });
     setShowResults(true);
+  };
+
+  const copyShortedUrl = () => {
+    alert("Copied to clipboard");
+    navigator.clipboard.writeText(shortedUrl);
   };
 
   const handleOnInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,8 +53,8 @@ const Short: React.FC = () => {
         <>
           <h2 className='text-blue'>YOUR NEW URL</h2>
           <div className='input-container'>
-            <Input customstyle={customInputStyle} name="Link" value={`${window.location.host + '//' + shortedUrl}`}></Input>
-            <Button name="Copy" onClick={handleShortClick}></Button>
+            <Input customstyle={customInputStyle} name="Link" value={shortedUrl}></Input>
+            <Button name="Copy" onClick={copyShortedUrl}></Button>
           </div>
         </>
       ) : (<></>)}
