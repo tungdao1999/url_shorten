@@ -4,7 +4,14 @@ using UrlShortenAPI.Models;
 
 namespace UrlShortenAPI.Service
 {
-    public class ShortService
+    public interface IShortService
+    {
+        Task<String> ShortUrl(string originalUrl);
+        Task<Url> GetUrlByHash(string hash);
+        Url GetExistedHashByOriginal(string originalUrl);
+
+    }
+    public class ShortService : IShortService
     {
         public UrlShortenContext UrlShortenContext { get; set; }
         public ShortService()
@@ -30,6 +37,12 @@ namespace UrlShortenAPI.Service
         public async Task<Url> GetUrlByHash(string hash)
         {
             var result = await UrlShortenContext.Urls.Where(x => x.Hash == hash).FirstOrDefaultAsync();
+            return result;
+        }
+
+        public Url GetExistedHashByOriginal(string originalUrl)
+        {
+            var result = UrlShortenContext.Urls.FirstOrDefault(x => x.OriginalUrl == originalUrl);
             return result;
         }
     }

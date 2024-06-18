@@ -11,18 +11,18 @@ namespace UrlShortenAPI.Controllers
     [EnableCors("AllowOrigin")]
     public class RedirectController : ControllerBase
     {
-        ShortService ShortService { get; set; }
+        IShortService shortService { get; set; }
         private readonly ILogger<ShortController> _logger;
 
-        public RedirectController(ILogger<ShortController> logger) {
+        public RedirectController(IShortService _shortService, ILogger<ShortController> logger) {
             _logger = logger;
-            ShortService = new ShortService();
+            shortService = _shortService;
         }
         [HttpGet]
         [Route("{id?}")]
         public IActionResult Index(string id)
         {
-            var url = ShortService.GetUrlByHash(id);
+            var url = shortService.GetUrlByHash(id);
             if (url?.Result?.OriginalUrl == null)
             {
                 return NotFound();

@@ -1,3 +1,6 @@
+using UrlShortenAPI;
+using UrlShortenAPI.Service;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,6 +20,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddTransient<IShortService, ShortService>();
 
 var app = builder.Build();
 
