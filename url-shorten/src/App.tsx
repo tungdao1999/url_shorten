@@ -6,6 +6,7 @@ import './App.css'
 import HandleRedirect from './redirect';
 import NotFoundError from './error/notfound';
 import Header from './page/header';
+import Sidebar from './components/sidebar';
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   let location = useLocation();
@@ -17,6 +18,7 @@ function RequireAuth({ children }: { children: JSX.Element }) {
   return children;
 }
 function App() {
+  
   return (
     <Router>
       <div>
