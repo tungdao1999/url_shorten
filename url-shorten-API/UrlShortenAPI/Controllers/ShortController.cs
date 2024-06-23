@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Cors;
 using UrlShortenAPI.Request;
 using UrlShortenAPI.Response;
 using UrlShortenAPI.Service;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace UrlShortenAPI.Controllers
 {

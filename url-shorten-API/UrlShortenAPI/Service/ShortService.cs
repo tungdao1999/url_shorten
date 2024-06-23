@@ -13,36 +13,36 @@ namespace UrlShortenAPI.Service
     }
     public class ShortService : IShortService
     {
-        public UrlShortenContext UrlShortenContext { get; set; }
-        public ShortService()
+        public UrlShortenContext _urlShortenContext { get; set; }
+        public ShortService(UrlShortenContext urlShortenContext)
         {
-            this.UrlShortenContext = new UrlShortenContext();
+            this._urlShortenContext = urlShortenContext;
         }
         public async Task<string> ShortUrl(string OriginalUrl)
         {
             Guid uuid = Guid.NewGuid();
             var hashedUuid = BitConverter.ToString(uuid.ToByteArray()).Replace("-", "").ToLower();
 
-            UrlShortenContext.Urls.Add(new Url
+            _urlShortenContext.Urls.Add(new Url
             {
                 OriginalUrl = OriginalUrl,
                 Hash = hashedUuid,
                 Expiration = DateTime.Now.AddDays(7),
                 UserId = 1
             });
-            UrlShortenContext.SaveChanges();
+            _urlShortenContext.SaveChanges();
             return hashedUuid;
         }
 
         public async Task<Url> GetUrlByHash(string hash)
         {
-            var result = await UrlShortenContext.Urls.Where(x => x.Hash == hash).FirstOrDefaultAsync();
+            var result = await _urlShortenContext.Urls.Where(x => x.Hash == hash).FirstOrDefaultAsync();
             return result;
         }
 
         public Url GetExistedHashByOriginal(string originalUrl)
         {
-            var result = UrlShortenContext.Urls.FirstOrDefault(x => x.OriginalUrl == originalUrl);
+            var result = _urlShortenContext.Urls.FirstOrDefault(x => x.OriginalUrl == originalUrl);
             return result;
         }
     }

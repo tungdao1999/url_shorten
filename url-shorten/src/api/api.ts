@@ -1,5 +1,5 @@
 import axios from 'axios';
-import urls from '../const/const';
+import { urls } from '../const/const';
 
 const api = {
   async getApiData(path: string) {

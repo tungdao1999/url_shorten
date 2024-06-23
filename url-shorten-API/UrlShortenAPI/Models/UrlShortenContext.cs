@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
+using UrlShortenAPI.Data;
 
 namespace UrlShortenAPI.Models;
 
-public partial class UrlShortenContext : DbContext
+public partial class UrlShortenContext : UrlShortenIdentityContext
 {
-    public UrlShortenContext()
-    {
-    }
-
     public UrlShortenContext(DbContextOptions<UrlShortenContext> options)
         : base(options)
     {
     }
 
+    public UrlShortenContext() { }
+
     public virtual DbSet<Url> Urls { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseMySql("server=url-shorten.cfqqouewii7m.ap-southeast-2.rds.amazonaws.com;database=URL_Shorten;user id=admin;password=016485tung", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.35-mysql"));
+    public override DbSet<IdentityUser> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,14 +1,20 @@
-using UrlShortenAPI;
+using Microsoft.AspNetCore.Identity;
+using UrlShortenAPI.Models;
 using UrlShortenAPI.Service;
+using Microsoft.EntityFrameworkCore;
+using UrlShortenAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("UrlShortenIdentityContextConnection") ?? throw new InvalidOperationException("Connection string 'UrlShortenIdentityContextConnection' not found.");
 
-// Add services to the container.
+builder.Services.AddDbContext<UrlShortenContext>(options => options.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.35-mysql")));
 
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<UrlShortenContext>();
+
+// Add controllers
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-// Add services to the container.
+// Add CORS policy
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowOrigin", builder =>
@@ -17,10 +23,16 @@ builder.Services.AddCors(options =>
              .AllowAnyMethod());
 });
 
-builder.Services.AddControllers();
+// Add Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add Identity and authorization
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
+builder.Services.AddIdentityCore<User>().AddUserStore<UrlShortenContext>().AddApiEndpoints();
+
+// Add transient service
 builder.Services.AddTransient<IShortService, ShortService>();
 
 var app = builder.Build();
