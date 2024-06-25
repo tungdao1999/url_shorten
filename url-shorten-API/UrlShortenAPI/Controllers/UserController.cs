@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace UrlShortenAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/users")]
     [EnableCors("AllowOrigin")]
     public class UserController : Controller
     {
-        public IActionResult Index()
+        public IActionResult MyUser()
         {
             return View();
         }

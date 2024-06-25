@@ -29,8 +29,6 @@ builder.Services.AddSwaggerGen();
 
 // Add Identity and authorization
 builder.Services.AddAuthorization();
-builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
-builder.Services.AddIdentityCore<User>().AddUserStore<UrlShortenContext>().AddApiEndpoints();
 
 // Add transient service
 builder.Services.AddTransient<IShortService, ShortService>();
