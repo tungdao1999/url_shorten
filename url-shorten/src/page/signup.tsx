@@ -1,9 +1,19 @@
 import React, { useState } from "react";
 import Input from "../components/input";
 import Button from "../components/button";
+import api from "../api/api";
 const customInputStyle = {
     width: '200px',
   };
+  interface RegisterRequest {
+    username: string;
+    password: string;
+    email: string;
+  }
+  interface Response {
+    status: string;
+    message: string;
+  }
 
 const SignUp : React.FC = () => {
     const [userName, setUserName] = React.useState('');
@@ -18,10 +28,21 @@ const SignUp : React.FC = () => {
       const handleOnEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
       };
+
       const submitSignup = () => {
-        console.log(userName);
-        console.log(password);
-        console.log(email);
+        const regiterRequest: RegisterRequest = {
+            username: userName,
+            password:  password,
+            email: email,
+        };
+        api.postApiData('register', regiterRequest)
+           .then((response: Response) => {
+            // handle success
+            // redirect to login page or home page
+        })
+        .catch((error: any) => {
+            console.log(error.message)
+        })
       };
     return (
         <div className="signup-container">

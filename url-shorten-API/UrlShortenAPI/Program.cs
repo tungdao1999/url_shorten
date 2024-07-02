@@ -2,17 +2,45 @@ using Microsoft.AspNetCore.Identity;
 using UrlShortenAPI.Models;
 using UrlShortenAPI.Service;
 using Microsoft.EntityFrameworkCore;
-using UrlShortenAPI.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+ConfigurationManager configuration = builder.Configuration;
+
 var connectionString = builder.Configuration.GetConnectionString("UrlShortenIdentityContextConnection") ?? throw new InvalidOperationException("Connection string 'UrlShortenIdentityContextConnection' not found.");
 
 builder.Services.AddDbContext<UrlShortenContext>(options => options.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.35-mysql")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<UrlShortenContext>();
-
 // Add controllers
 builder.Services.AddControllers();
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<UrlShortenContext>()
+    .AddDefaultTokenProviders();
+
+    // Adding Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+// Adding Jwt Bearer
+.AddJwtBearer(options =>
+ {
+     options.SaveToken = true;
+     options.RequireHttpsMetadata = false;
+     options.TokenValidationParameters = new TokenValidationParameters()
+     {
+         ValidateIssuer = true,
+         ValidateAudience = true,
+         ValidAudience = configuration["JWT:ValidAudience"],
+         ValidIssuer = configuration["JWT:ValidIssuer"],
+         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
+     };
+ });
 
 // Add CORS policy
 builder.Services.AddCors(options =>
